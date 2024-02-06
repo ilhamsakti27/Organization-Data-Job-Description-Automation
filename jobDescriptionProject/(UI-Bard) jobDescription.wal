@@ -1,0 +1,231 @@
+��defVar --name excelFileJobDesc --type Excel
+defVar --name jobTable --type DataTable
+defVar --name row_iterator --type Numeric
+defVar --name nameOfPosition --type String
+defVar --name chief --type String
+defVar --name rolePurpose --type String
+defVar --name areaOfResponsibilities --type String
+defVar --name keyActivities --type String
+defVar --name deliverables --type String
+defVar --name qualification --type String
+defVar --name relatedExperience --type String
+defVar --name skill --type String
+defVar --name skillValueOfBardResponse --type String --value Kosong
+defVar --name positionOfRolePurposeColumn --type Numeric
+defVar --name elementBardRespond --type String
+defVar --name excel_iterator --type Numeric
+defVar --name jobTableCopy --type DataTable
+defVar --name indexSkillColumn --type Numeric
+defVar --name relatedExperienceValueOfBardResponse --type String
+defVar --name qualificationValueOfBardResponse --type String
+defVar --name deliverablesValueOfBardResponse --type String
+defVar --name keyActivitiesValueOfBardResponse --type String
+defVar --name areaOfResponsibilitiesValueOfBardResponse --type String
+defVar --name rolePurposeValueOfBardResponse --type String
+defVar --name newExcelFileJobDescription --type Excel
+defVar --name pathResultsFolder --type String --value "C:\\Users\\ilham\\Documents\\bootcamp\\ICStar\\jobDescription\\results"
+defVar --name resultPath --type String --value "C:\\Users\\ilham\\Documents\\bootcamp\\ICStar\\jobDescription\\results"
+defVar --name pathNewExcelFileJobDescription --type String
+defVar --name createNewExcelFileJobDescription --type OfficeApplication
+defVar --name dataConnectOneDrive --type FileSystem
+defVar --name pathOneDrive --type List --innertype String
+defVar --name group --type String
+defVar --name division --type String
+defVar --name desktopPath --type String
+//oneDriveConnect --name icstar_ioh_onedrive_microsoft_onedrive dataConnectOneDrive=value
+//getFiles --path "/" --recursive  --filemask "*.xlsx" --fileSystem ${dataConnectOneDrive} pathOneDrive=value
+//excelOpen --file "${pathOneDrive}" --comment "open excel file from onedrive" excelFileJobDesc=value
+excelOpen --file "C:\\Users\\ilham\\Documents\\1_Bootcamp\\ICStar\\jobDescription\\jobDesc.xlsx" --comment "open local excel file" excelFileJobDesc=value
+excelGetTable --file ${excelFileJobDesc} --sheet Sheet1 --fromrow 2 --fromcolumn 2 --torow 8 --tocolumn 24 --hasheaders  jobTable=value
+webStart --name webBrowser --type "Edge" --userprofilepreferences "AutomationOptimized" --downloadpath "C:\\Users\\ilham\\AppData\\Local\\IBM Robotic Process Automation\\downloads"
+webNavigate --url "https://bard.google.com/chat" --comment "go to bard chat"
+webWait
+webWaitElement --selector "XPath" --xpath "/html/body/header/div[2]/div[3]/div[1]/a" --simulatehuman  --comment "wait \"Sign In\" button"
+webClick --selector "XPath" --xpath "/html/body/header/div[2]/div[3]/div[1]/a" --simulatehuman  --comment "click \"Sign In\" button"
+webWaitElement --selector "XPath" --xpath "/html/body/div[1]/div[1]/div[2]/div/c-wiz/div/div[2]/div/div[1]/div/form/span/section/div/div/div[1]/div/div[1]/div/div[1]/input" --simulatehuman  --comment "waiting \"Username\" field"
+webClick --selector "XPath" --xpath "/html/body/div[1]/div[1]/div[2]/div/c-wiz/div/div[2]/div/div[1]/div/form/span/section/div/div/div[1]/div/div[1]/div/div[1]/input" --simulatehuman 
+webSet --value "teamioh9@gmail.com" --selector "XPath" --xpath "/html/body/div[1]/div[1]/div[2]/div/c-wiz/div/div[2]/div/div[1]/div/form/span/section/div/div/div[1]/div/div[1]/div/div[1]/input" --simulatehuman 
+webClick --selector "XPath" --xpath "/html/body/div[1]/div[1]/div[2]/div/c-wiz/div/div[2]/div/div[2]/div/div[1]/div/div/button" --simulatehuman  --comment "click \"Next\" button"
+webWaitElement --selector "XPath" --xpath "/html/body/div[1]/div[1]/div[2]/div/c-wiz/div/div[2]/div/div[1]/div/form/span/section[2]/div/div/div[1]/div[1]/div/div/div/div/div[1]/div/div[1]/input" --simulatehuman  --comment "waiting \"Password\" field"
+webClick --selector "XPath" --xpath "/html/body/div[1]/div[1]/div[2]/div/c-wiz/div/div[2]/div/div[1]/div/form/span/section[2]/div/div/div[1]/div[1]/div/div/div/div/div[1]/div/div[1]/input" --simulatehuman 
+webSet --value "Te@m5IOHKerenAbis123" --selector "XPath" --xpath "/html/body/div[1]/div[1]/div[2]/div/c-wiz/div/div[2]/div/div[1]/div/form/span/section[2]/div/div/div[1]/div[1]/div/div/div/div/div[1]/div/div[1]/input" --simulatehuman 
+webClick --selector "XPath" --xpath "/html/body/div[1]/div[1]/div[2]/div/c-wiz/div/div[2]/div/div[2]/div/div[1]/div/div/button" --simulatehuman  --comment "click \"Next\" button"
+for --variable ${excel_iterator} --from 1 --to 5 --step 1 --comment "loop to get five excel versions"
+	logMessage --message "${excel_iterator} - Excel" --type "Info"
+	copyTable --dataTable ${jobTable} jobTableCopy=value
+	for --variable ${row_iterator} --from 1 --to ${jobTable.Rows} --step 1
+		mapTableRow --dataTable ${jobTableCopy} --row ${row_iterator} --mappings "[{\"Name\":\"Name of Position\",\"Number\":null,\"Output\":\"${nameOfPosition}\"},{\"Name\":\"Chief\",\"Number\":null,\"Output\":\"${chief}\"},{\"Name\":\"Role Purpose\",\"Number\":null,\"Output\":\"${rolePurpose}\"},{\"Name\":\"Area of Responsibilities\",\"Number\":null,\"Output\":\"${areaOfResponsibilities}\"},{\"Name\":\"Key Activities\",\"Number\":null,\"Output\":\"${keyActivities}\"},{\"Name\":\"Deliverables\",\"Number\":null,\"Output\":\"${deliverables}\"},{\"Name\":\"Qualification\",\"Number\":null,\"Output\":\"${qualification}\"},{\"Name\":\"Related Experience\",\"Number\":null,\"Output\":\"${relatedExperience}\"},{\"Name\":\"Skill\",\"Number\":null,\"Output\":\"${skill}\"},{\"Name\":\"Group \",\"Number\":null,\"Output\":\"${group}\"},{\"Name\":\"Division \",\"Number\":null,\"Output\":\"${division}\"}]" --comment "get data in one row of table"
+		if --left "${rolePurpose}" --operator "Is_Empty"
+			logMessage --message "role purpose column is empty" --type "Info"
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "waiting \"prompt\" element Bard"
+			webClick --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "click \"prompt\" element Bard"
+			if --left "${excel_iterator}" --operator "Equal_To" --right 1 --comment "if (excel_iterator = 1)"
+				webSet --value "Give me a brief description in bullet points \"Role Purpose\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-1] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 2 --comment "else if (excel_iterator = 2)"
+				webSet --value "Give me description \"Role Purpose\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-2] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 3 --comment "else if (excel_iterator = 3)"
+				webSet --value "Create a \"Role Purpose\" for the “${nameOfPosition}” position under the leadership of the “${chief}”." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-3] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 4 --comment "else if (excel_iterator = 4)"
+				webSet --value "Give me brief description \"Role Purpose\" for the position of \"${nameOfPosition}\" under the leadership of the \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-4] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 5 --comment "else if (excel_iterator = 5)"
+				webSet --value "Please provide a brief overview of the \"Role Purpose\" for the position of \"${nameOfPosition}\" under the leadership of the \"${chief}\" within the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-5] set value to \"prompt\" element Bard"
+			endIf
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[2]/button" --simulatehuman  --comment "wait submit element"
+			delay --timeout "00:00:05"
+			webClick --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[2]/button" --simulatehuman  --comment "click \"Submit\" element Bard"
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[1]/infinite-scroller/div/model-response/div/response-container/div/div[2]/div[2]/div/message-content" --simulatehuman  --comment "waiting response element"
+			delay --timeout "00:00:10"
+			webGet --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[1]/infinite-scroller/div/model-response/div/response-container/div/div[2]/div[2]/div/message-content" --simulatehuman  --comment "get response and save to variable" rolePurposeValueOfBardResponse=value
+			updateRow --index ${row_iterator} --valuesmapping "{\"Role Purpose\":\"${rolePurposeValueOfBardResponse}\"}" --dataTable ${jobTableCopy}
+		endIf
+		if --left "${areaOfResponsibilities}" --operator "Is_Empty"
+			logMessage --message "Area of Responsibilities column is empty" --type "Info"
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "waiting \"prompt\" element Bard"
+			webClick --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "click \"prompt\" element Bard"
+			//webSet --value "Give me a brief description in bullet points \"${rolePurpose}\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "set value to \"prompt\" element Bard"
+			if --left "${excel_iterator}" --operator "Equal_To" --right 1 --comment "if (excel_iterator = 1)"
+				webSet --value "Give me a brief description in bullet points \"Area Of Responsibilities\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-1] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 2 --comment "else if (excel_iterator = 2)"
+				webSet --value "Give me description \"Area Of Responsibilities\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-2] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 3 --comment "else if (excel_iterator = 3)"
+				webSet --value "Create a \"Area Of Responsibilities\" for the “${nameOfPosition}” position under the leadership of the “${chief}”." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-3] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 4 --comment "else if (excel_iterator = 4)"
+				webSet --value "Give me brief description \"Area Of Responsibilities\" for the position of \"${nameOfPosition}\" under the leadership of the \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-4] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 5 --comment "else if (excel_iterator = 5)"
+				webSet --value "Please provide a brief overview of the \"Area Of Responsibilities\" for the position of \"${nameOfPosition}\" under the leadership of the \"${chief}\" within the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-5] set value to \"prompt\" element Bard"
+			endIf
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[2]/button" --simulatehuman  --comment "wait submit element"
+			delay --timeout "00:00:05"
+			webClick --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[2]/button" --simulatehuman  --comment "click \"Submit\" element Bard"
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[1]/infinite-scroller/div/model-response/div/response-container/div/div[2]/div[2]/div/message-content" --simulatehuman  --comment "waiting response element"
+			webGet --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[1]/infinite-scroller/div/model-response/div/response-container/div/div[2]/div[2]/div/message-content" --simulatehuman  --comment "get response and save to variable" areaOfResponsibilitiesValueOfBardResponse=value
+			delay --timeout "00:00:10"
+			updateRow --index ${row_iterator} --valuesmapping "{\"Area of Responsibilities\":\"${areaOfResponsibilitiesValueOfBardResponse}\"}" --dataTable ${jobTableCopy}
+		endIf
+		if --left "${keyActivities}" --operator "Is_Empty"
+			logMessage --message "key activities column is empty" --type "Info"
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "waiting \"prompt\" element Bard"
+			webClick --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "click \"prompt\" element Bard"
+			//webSet --value "Give me a brief description in bullet points \"${rolePurpose}\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "set value to \"prompt\" element Bard"
+			if --left "${excel_iterator}" --operator "Equal_To" --right 1 --comment "if (excel_iterator = 1)"
+				webSet --value "Give me a brief description in bullet points \"Key Activities\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-1] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 2 --comment "else if (excel_iterator = 2)"
+				webSet --value "Give me description \"Key Activities\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-2] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 3 --comment "else if (excel_iterator = 3)"
+				webSet --value "Create a \"Key Activities\" for the “${nameOfPosition}” position under the leadership of the “${chief}”." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-3] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 4 --comment "else if (excel_iterator = 4)"
+				webSet --value "Give me brief description \"Key Activities\" for the position of \"${nameOfPosition}\" under the leadership of the \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-4] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 5 --comment "else if (excel_iterator = 5)"
+				webSet --value "Please provide a brief overview of the \"Key Activities\" for the position of \"${nameOfPosition}\" under the leadership of the \"${chief}\" within the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-5] set value to \"prompt\" element Bard"
+			endIf
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[2]/button" --simulatehuman  --comment "wait submit element"
+			delay --timeout "00:00:05"
+			webClick --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[2]/button" --simulatehuman  --comment "click \"Submit\" element Bard"
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[1]/infinite-scroller/div/model-response/div/response-container/div/div[2]/div[2]/div/message-content" --simulatehuman  --comment "waiting response element"
+			delay --timeout "00:00:10"
+			webGet --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[1]/infinite-scroller/div/model-response/div/response-container/div/div[2]/div[2]/div/message-content" --simulatehuman  --comment "get response and save to variable" keyActivitiesValueOfBardResponse=value
+			updateRow --index ${row_iterator} --valuesmapping "{\"Key Activities\":\"${keyActivitiesValueOfBardResponse}\"}" --dataTable ${jobTableCopy}
+		endIf
+		if --left "${deliverables}" --operator "Is_Empty"
+			logMessage --message "Deliverables column is empry" --type "Info"
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "waiting \"prompt\" element Bard"
+			webClick --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "click \"prompt\" element Bard"
+			//webSet --value "Give me a brief description in bullet points \"${rolePurpose}\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "set value to \"prompt\" element Bard"
+			if --left "${excel_iterator}" --operator "Equal_To" --right 1 --comment "if (excel_iterator = 1)"
+				webSet --value "Give me a brief description in bullet points \"Deliverables\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-1] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 2 --comment "else if (excel_iterator = 2)"
+				webSet --value "Give me description \"Deliverables\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-2] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 3 --comment "else if (excel_iterator = 3)"
+				webSet --value "Create a \"Deliverables\" for the “${nameOfPosition}” position under the leadership of the “${chief}”." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-3] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 4 --comment "else if (excel_iterator = 4)"
+				webSet --value "Give me brief description \"Deliverables\" for the position of \"${nameOfPosition}\" under the leadership of the \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-4] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 5 --comment "else if (excel_iterator = 5)"
+				webSet --value "Please provide a brief overview of the \"Deliverables\" for the position of \"${nameOfPosition}\" under the leadership of the \"${chief}\" within the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-5] set value to \"prompt\" element Bard"
+			endIf
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[2]/button" --simulatehuman  --comment "wait submit element"
+			delay --timeout "00:00:05"
+			webClick --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[2]/button" --simulatehuman  --comment "click \"Submit\" element Bard"
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[1]/infinite-scroller/div/model-response/div/response-container/div/div[2]/div[2]/div/message-content" --simulatehuman  --comment "waiting response element"
+			delay --timeout "00:00:10"
+			webGet --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[1]/infinite-scroller/div/model-response/div/response-container/div/div[2]/div[2]/div/message-content" --simulatehuman  --comment "get response and save to variable" deliverablesValueOfBardResponse=value
+			updateRow --index ${row_iterator} --valuesmapping "{\"Deliverables\":\"${deliverablesValueOfBardResponse}\"}" --dataTable ${jobTableCopy}
+		endIf
+		if --left "${qualification}" --operator "Is_Empty"
+			logMessage --message "Qualification column is empty" --type "Info"
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "waiting \"prompt\" element Bard"
+			webClick --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "click \"prompt\" element Bard"
+			//webSet --value "Give me a brief description in bullet points \"${rolePurpose}\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "set value to \"prompt\" element Bard"
+			if --left "${excel_iterator}" --operator "Equal_To" --right 1 --comment "if (excel_iterator = 1)"
+				webSet --value "Give me a brief description in bullet points \"Qualification\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-1] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 2 --comment "else if (excel_iterator = 2)"
+				webSet --value "Give me description \"Qualification\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-2] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 3 --comment "else if (excel_iterator = 3)"
+				webSet --value "Create a \"Qualification\" for the “${nameOfPosition}” position under the leadership of the “${chief}”." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-3] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 4 --comment "else if (excel_iterator = 4)"
+				webSet --value "Give me brief description \"Qualification\" for the position of \"${nameOfPosition}\" under the leadership of the \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-4] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 5 --comment "else if (excel_iterator = 5)"
+				webSet --value "Please provide a brief overview of the \"Qualification\" for the position of \"${nameOfPosition}\" under the leadership of the \"${chief}\" within the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-5] set value to \"prompt\" element Bard"
+			endIf
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[2]/button" --simulatehuman  --comment "wait submit element"
+			delay --timeout "00:00:05"
+			webClick --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[2]/button" --simulatehuman  --comment "click \"Submit\" element Bard"
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[1]/infinite-scroller/div/model-response/div/response-container/div/div[2]/div[2]/div/message-content" --simulatehuman  --comment "waiting response element"
+			delay --timeout "00:00:10"
+			webGet --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[1]/infinite-scroller/div/model-response/div/response-container/div/div[2]/div[2]/div/message-content" --simulatehuman  --comment "get response and save to variable" qualificationValueOfBardResponse=value
+			updateRow --index ${row_iterator} --valuesmapping "{\"Qualification\":\"${qualificationValueOfBardResponse}\"}" --dataTable ${jobTableCopy}
+		endIf
+		if --left "${relatedExperience}" --operator "Is_Empty"
+			logMessage --message "Related Experience column is empty" --type "Info"
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "waiting \"prompt\" element Bard"
+			webClick --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "click \"prompt\" element Bard"
+			//webSet --value "Give me a brief description in bullet points \"${rolePurpose}\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "set value to \"prompt\" element Bard"
+			if --left "${excel_iterator}" --operator "Equal_To" --right 1 --comment "if (excel_iterator = 1)"
+				webSet --value "Give me a brief description in bullet points \"Related Experience\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-1] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 2 --comment "else if (excel_iterator = 2)"
+				webSet --value "Give me description \"Related Experience\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-2] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 3 --comment "else if (excel_iterator = 3)"
+				webSet --value "Create a \"Related Experience\" for the “${nameOfPosition}” position under the leadership of the “${chief}”." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-3] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 4 --comment "else if (excel_iterator = 4)"
+				webSet --value "Give me brief description \"Related Experience\" for the position of \"${nameOfPosition}\" under the leadership of the \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-4] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 5 --comment "else if (excel_iterator = 5)"
+				webSet --value "Please provide a brief overview of the \"Related Experience\" for the position of \"${nameOfPosition}\" under the leadership of the \"${chief}\" within the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-5] set value to \"prompt\" element Bard"
+			endIf
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[2]/button" --simulatehuman  --comment "wait submit element"
+			delay --timeout "00:00:05"
+			webClick --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[2]/button" --simulatehuman  --comment "click \"Submit\" element Bard"
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[1]/infinite-scroller/div/model-response/div/response-container/div/div[2]/div[2]/div/message-content" --simulatehuman  --comment "waiting response element"
+			delay --timeout "00:00:10"
+			webGet --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[1]/infinite-scroller/div/model-response/div/response-container/div/div[2]/div[2]/div/message-content" --simulatehuman  --comment "get response and save to variable" relatedExperienceValueOfBardResponse=value
+			updateRow --index ${row_iterator} --valuesmapping "{\"Related Experience\":\"${relatedExperienceValueOfBardResponse}\"}" --dataTable ${jobTableCopy}
+		endIf
+		if --left "${skill}" --operator "Is_Empty"
+			logMessage --message "Skill column is empty\r\n" --type "Info"
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "waiting \"prompt\" element Bard"
+			webClick --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "click \"prompt\" element Bard"
+			//webSet --value "Give me a brief description in bullet points \"${rolePurpose}\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "set value to \"prompt\" element Bard"
+			if --left "${excel_iterator}" --operator "Equal_To" --right 1 --comment "if (excel_iterator = 1)"
+				webSet --value "Give me a brief description in bullet points \"Skill\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-1] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 2 --comment "else if (excel_iterator = 2)"
+				webSet --value "Give me description \"Skill\" for the position of \"${nameOfPosition}\" under \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-2] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 3 --comment "else if (excel_iterator = 3)"
+				webSet --value "Create a \"Skill\" for the “${nameOfPosition}” position under the leadership of the “${chief}”." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-3] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 4 --comment "else if (excel_iterator = 4)"
+				webSet --value "Give me brief description \"Skill\" for the position of \"${nameOfPosition}\" under the leadership of the \"${chief}\" in the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-4] set value to \"prompt\" element Bard"
+			elseIf --left "${excel_iterator}" --operator "Equal_To" --right 5 --comment "else if (excel_iterator = 5)"
+				webSet --value "Please provide a brief overview of the \"Skill\" for the position of \"${nameOfPosition}\" under the leadership of the \"${chief}\" within the \"${group}\" group in the \"${division}\" division." --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[1]/div/div/div/rich-textarea/div[1]" --simulatehuman  --comment "[model-5] set value to \"prompt\" element Bard"
+			endIf
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[2]/button" --simulatehuman  --comment "wait submit element"
+			delay --timeout "00:00:05"
+			webClick --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[2]/div[1]/input-area/div/div[2]/button" --simulatehuman  --comment "click \"Submit\" element Bard"
+			webWaitElement --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[1]/infinite-scroller/div/model-response/div/response-container/div/div[2]/div[2]/div/message-content" --simulatehuman  --comment "waiting response element"
+			delay --timeout "00:00:10"
+			webGet --selector "XPath" --xpath "/html/body/chat-app/side-navigation/mat-sidenav-container/mat-sidenav-content/main/chat-window/div[1]/div[1]/infinite-scroller/div/model-response/div/response-container/div/div[2]/div[2]/div/message-content" --simulatehuman  --comment "get response and save to variable" skillValueOfBardResponse=value
+			updateRow --index ${row_iterator} --valuesmapping "{\"Skill\":\"${skillValueOfBardResponse}\"}" --dataTable ${jobTableCopy}
+		endIf
+	next
+	getSpecialFolder --folder "Desktop" desktopPath=value
+	excelReport --file "${desktopPath}\\result.xlsx" --dataTable ${jobTableCopy} --sheet "result-${excel_iterator}" --cell A1 --headers  newExcelFileJobDescription=value
+	//excelReport --file "${pathResultsFolder}\\result.xlsx" --dataTable ${jobTableCopy} --sheet "result-${excel_iterator}" --cell A1 --headers  newExcelFileJobDescription=value
+	excelClose --file ${newExcelFileJobDescription} --save 
+next
+webClose --name webBrowser*23.0.9.0

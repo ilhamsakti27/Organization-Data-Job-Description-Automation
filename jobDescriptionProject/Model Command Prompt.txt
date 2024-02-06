@@ -1,0 +1,41 @@
+# MODEL COMMAND PROMPT FOR GENERATE JOB DESCRIPTION
+
+### Model 1
+
+Give me a brief description in bullet points "`[value to looking for]`" for the position of "`[name of position]`" under "`[chief]`" in the "`[group]`" group in the "`[devision]`" division.
+
+*Contoh:*
+
+Give me a brief description in bullet points "Qualification" for the position of "Head of Region" under "Office of Director & Chief Commercial" in the "Region (Area)" group in the "Region (Area)" division.
+
+### Model 2
+
+Give me description "`[value to looking for]`" for the position of "`[name of position]`" under "`[chief]`" in the "`[group]`" group in the "`[devision]`" division.
+
+*Contoh:*
+
+Give me brief description "Role Purpose" for the position of "Head of Region" under "Office of Director & Chief Commercial" in the "Region (Area)" group in the "Region (Area)" division.
+
+### Model 3
+
+Create a "`[value to looking for]`" for the “`[name of position]`” position under the leadership of the “`[chief]`”.
+
+*Contoh:*
+
+Create a "Role Purpose" for the “Regional Sales Manager” position under the leadership of the “Director of Sales”.
+
+### Model 4
+
+Give me brief description "`[value to looking for]`" for the position of "`[name of position]`" under the leadership of the "`[chief]`" in the "`[group]`" group in the "`[devision]`" division.
+
+*Contoh:*
+
+Give me brief description "Role Purpose" for the position of "Head of Region" under the leadership of the "Office of Director & Chief Commercial" in the "Region (Area)" group in the "Region (Area)" division.
+
+### Model 5
+
+Please provide a brief overview of the "`[value to looking for]`" for the position of "`[name of position]`" under the leadership of the "`[chief]`" within the "`[group]`" group in the "`[devision]`" division.
+
+*******Contoh:*******
+
+Please provide a brief overview of the "Role Purpose" for the position of "Head of Region" under the leadership of the "Office of Director & Chief Commercial" within the "Region (Area)" group in the "Region (Area)" division.

@@ -1,0 +1,29 @@
+÷defVar --name NewHireData --type DataTable
+defVar --name row_iterator --type Numeric
+defVar --name firstName --type String
+defVar --name lastName --type String
+defVar --name gender --type String
+defVar --name DOBtext --type String
+defVar --name DOBdatetime --type DateTime
+defVar --name DOBconverted --type String
+readCSV --filepath "C:\\Users\\ilham\\Downloads\\Exercise 1\\NewHireInfo.csv" --delimiter "," --hasheaders  --encoding "UTF8" --missingfieldaction "ParseError" NewHireData=value
+webStart --name web01 --type "Chrome" --userprofilepreferences "AutomationOptimized" --downloadpath "C:\\Users\\ilham\\AppData\\Local\\IBM Robotic Process Automation\\downloads"
+for --variable ${row_iterator} --from 1 --to ${NewHireData.Rows} --step 1
+	mapTableRow --dataTable ${NewHireData} --row ${row_iterator} --mappings "[{\"Name\":\"First Name\",\"Number\":null,\"Output\":\"${firstName}\"},{\"Name\":\"Last Name\",\"Number\":null,\"Output\":\"${lastName}\"},{\"Name\":\"Gender\",\"Number\":null,\"Output\":\"${gender}\"},{\"Name\":\"DOB\",\"Number\":null,\"Output\":\"${DOBtext}\"}]"
+	webNavigate --url "https://s.surveyplanet.com/ktxwh3t4"
+	webWaitElement --selector "XPath" --xpath "/html/body/div/div/footer/nav[1]/ul/li/a" --simulatehuman 
+	webClick --selector "XPath" --xpath "/html/body/div/div/footer/nav[1]/ul/li/a" --simulatehuman 
+	webSet --value "${firstName} ${lastName}" --selector "XPath" --xpath "/html/body/div/main/div[1]/div/div/textarea" --simulatehuman 
+	if --left "${gender}" --operator "Equal_To" --right Female
+		webClick --selector "XPath" --xpath "/html/body/div/main/div[2]/div/ul/li[1]/label/div" --simulatehuman  --comment "Click on Female option"
+	endIf
+	if --left "${gender}" --operator "Equal_To" --right Male
+		webClick --selector "XPath" --xpath "/html/body/div/main/div[2]/div/ul/li[2]/label/div" --comment "Click on Male option"
+	endIf
+	textToDateTime --culture "en-US" --text "${DOBtext}" DOBdatetime=value
+	dateTimeToText --culture "en-US" --date "${DOBdatetime}" --usecustomformat  --customformat "MM/dd/yyyy" DOBconverted=value
+	webSet --value "${DOBconverted}" --selector "XPath" --xpath "/html/body/div/main/div[3]/div/ul/li[1]/input" --simulatehuman  --comment "isi Date of Birth"
+	webClick --selector "XPath" --xpath "/html/body/div/main/div[3]/footer/nav/ul/li/a" --simulatehuman  --comment submit
+	delay --timeout "00:00:02"
+next
+webClose --name web01*23.0.9.0

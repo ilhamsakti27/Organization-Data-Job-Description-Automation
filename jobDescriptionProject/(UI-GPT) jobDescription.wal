@@ -1,0 +1,39 @@
+ÿ!defVar --name jobTableData --type Excel
+defVar --name nameOfPosition --type String
+defVar --name valueColumnNameOfPosition --type Numeric
+defVar --name jobTable --type DataTable
+defVar --name True --type Boolean
+defVar --name row_iterator --type Numeric
+defVar --name chief --type String
+defVar --name rolePurpose --type String
+defVar --name areaOfResponsibilities --type String
+defVar --name keyActivities --type String
+defVar --name deliverables --type String
+defVar --name qualification --type String
+defVar --name relatedExperience --type String
+defVar --name skill --type String
+defVar --name gptResponse --type String
+excelOpen --file "C:\\Users\\ilham\\Documents\\bootcamp\\ICStar\\jobDescription\\jobDesc.xlsx" True=success jobTableData=value
+excelGetTable --file ${jobTableData} --sheet Sheet1 --fromrow 2 --fromcolumn 2 --torow 8 --tocolumn 24 --hasheaders  jobTable=value
+webStart --name browser --type "Chrome" --userprofilepreferences "AutomationOptimized" --downloadpath "C:\\Users\\ilham\\AppData\\Local\\IBM Robotic Process Automation\\downloads" --incognito 
+for --variable ${row_iterator} --from 1 --to ${jobTable.Rows} --step 1
+	mapTableRow --dataTable ${jobTable} --row ${row_iterator} --mappings "[{\"Name\":\"Name of Position\",\"Number\":null,\"Output\":\"${nameOfPosition}\"},{\"Name\":\"Chief\",\"Number\":null,\"Output\":\"${chief}\"},{\"Name\":\"Role Purpose\",\"Number\":null,\"Output\":\"${rolePurpose}\"},{\"Name\":\"Area of Responsibilities\",\"Number\":null,\"Output\":\"${areaOfResponsibilities}\"},{\"Name\":\"Key Activities\",\"Number\":null,\"Output\":\"${keyActivities}\"},{\"Name\":\"Deliverables\",\"Number\":null,\"Output\":\"${deliverables}\"},{\"Name\":\"Qualification\",\"Number\":null,\"Output\":\"${qualification}\"},{\"Name\":\"Related Experience\",\"Number\":null,\"Output\":\"${relatedExperience}\"},{\"Name\":\"Skill\",\"Number\":null,\"Output\":\"${skill}\"}]" --comment "[?] Nama Kolom tdk terload"
+	webNavigate --url "https://chat.openai.com/" --comment "go to chatGPT"
+	webWaitElement --selector "XPath" --xpath "/html/body/div[1]/div[1]/div[2]/div[1]/div/div/button[1]" --simulatehuman  --comment "waiting login button gpt"
+	delay --timeout "00:00:02"
+	webClick --selector "XPath" --xpath "/html/body/div[1]/div[1]/div[2]/div[1]/div/div/button[1]" --simulatehuman  --comment "click login chatGPT"
+	delay --timeout "00:00:02"
+	webWaitElement --selector "XPath" --xpath "/html/body/div/div/div[1]/div/label/input" --simulatehuman  --comment "waiting for human-validating element"
+	webClick --selector "XPath" --xpath "wait element validating human" --simulatehuman  --comment "click human-validating element"
+	webWaitElement --selector "XPath" --xpath "/html/body/div/main/section/div/div/div/div[1]/div/form/div[1]/div/div/div/input" --simulatehuman 
+	webClick --selector "XPath" --xpath "/html/body/div/main/section/div/div/div/div[1]/div/form/div[1]/div/div/div/input" --simulatehuman  --comment "click email address field"
+	webSet --value "ilhamsakti227@gmail.com" --selector "XPath" --xpath "/html/body/div/main/section/div/div/div/div[1]/div/form/div[1]/div/div/div/input" --simulatehuman  --comment "set the value of email address GPT login"
+	webClick --selector "XPath" --xpath "/html/body/div/main/section/div/div/div/div[1]/div/form/div[2]/button" --simulatehuman  --comment "click continue"
+	webWaitElement --selector "XPath" --xpath "/html/body/div[1]/div[1]/div/main/div[1]/div[2]/form/div/div[1]/div/textarea"
+	webClick --selector "XPath" --xpath "/html/body/div[1]/div[1]/div/main/div[1]/div[2]/form/div/div[1]/div/textarea" --simulatehuman 
+	webSet --value "Hello World" --selector "XPath" --xpath "/html/body/div[1]/div[1]/div/main/div[1]/div[2]/form/div/div[1]/div/textarea" --simulatehuman  --comment "[?] template command ke GPT"
+	webClick --selector "XPath" --xpath "/html/body/div[1]/div[1]/div/main/div[1]/div[2]/form/div/div[1]/div/button" --simulatehuman 
+	webWaitElement --selector "XPath" --xpath "/html/body/div[1]/div[1]/div/main/div[1]/div[1]/div/div/div/div[2]/div/div/div[2]/div/div[1]/div/div/p"
+	webGet --selector "XPath" --xpath "/html/body/div[1]/div[1]/div/main/div[1]/div[1]/div/div/div/div[2]/div/div/div[2]/div/div[1]/div/div/p" --simulatehuman  --comment "get response GPT" gptResponse=value
+next
+webClose --name browser*23.0.9.0
